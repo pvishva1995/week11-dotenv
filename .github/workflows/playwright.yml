@@ -3,20 +3,32 @@ on:
   pull_request:
     branches: [ main, master ]
     paths:
-      - "week-11-github-actions/**"
+      - "week-11.2-addAndconfig/**"
   workflow_dispatch:
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env: 
+        BASE_URL: ${{ secrets.BASE_URL }}
+        ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+        ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        USER_EMAIL: ${{ secrets.USER_EMAIL }}
+        USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
     defaults:
       run:
-        working-directory: week-11-github-actions
+        working-directory: week-11.2-addAndconfig
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+      env: 
+        BASE_URL: ${{ secrets.BASE_URL }}
+        ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+        ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        USER_EMAIL: ${{ secrets.USER_EMAIL }}
+        USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
@@ -27,5 +39,5 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
-        path: week-11-github-actions/playwright-report/
+        path: week-11.2-addAndconfig/playwright-report/
         retention-days: 30
