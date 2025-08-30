@@ -7,10 +7,6 @@ import { apiLogin } from '../../api/UsersApi.js';
 import users from '../../testData/users.json'
 import { apiCreateListing } from '../../api/ListingsApi.js';
 
-
-// const adminEmail = users.admin.email;
-// const adminPassword = users.admin.password;
-
 test.describe("Search on Homepage", () => {
         let homePage;
         let featuredlistPage;
@@ -40,6 +36,7 @@ test.describe("Search on Homepage", () => {
     test('Should search by keyword', async ( {page} ) => {
         await homePage.searchWithKeyword(listingTitle);
         await homePage.searchButton();
+
         await expect(page.getByText(listingTitle)).toBeVisible({timeout: 30000 });
     });
 
@@ -47,8 +44,7 @@ test.describe("Search on Homepage", () => {
         await homePage.selectBedrooms(testData.BedroomData.bedrooms);
         await homePage.searchButton();
 
-        // await page.waitForLoadState('networkidle');
-          await expect(listingDetailsPage.propertyBed).toBeVisible({ timeout: 30000 });    
+        await expect(listingDetailsPage.propertyBed).toBeVisible({ timeout: 30000 });    
         const bedroomsText = await listingDetailsPage.propertyBed.textContent();
         const bedroomsCount = bedroomsText.match(/\d+/);
         const bedroomsCountNumber = parseInt(bedroomsCount[0], 10);

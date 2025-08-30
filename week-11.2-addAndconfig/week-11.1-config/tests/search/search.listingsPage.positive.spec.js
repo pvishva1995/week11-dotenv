@@ -8,8 +8,6 @@ import users from '../../testData/users.json'
 import { apiCreateListing } from '../../api/ListingsApi.js';
 import { TIMEOUT } from 'dns';
 
-// const adminEmail = users.admin.email;
-// const adminPassword = users.admin.password;
 
 test.describe("Search on FeaturedListings page", () => {
         let featuredlistPage;
@@ -30,7 +28,7 @@ test.describe("Search on FeaturedListings page", () => {
         await featuredlistPage.searchKeyword(createdListing.title);
         await featuredlistPage.searchButton();
 
-        await expect(authenticatedPage.getByText(createdListing.title)).toBeVisible();
+        await expect(authenticatedPage.getByRole('heading', { name: createdListing.title }).first()).toBeVisible();
     });
 
     test('Should search by bedrooms', async ( { authenticatedPage,createdListing } ) => {

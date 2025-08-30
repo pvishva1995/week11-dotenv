@@ -10,10 +10,11 @@ export class DashboardPage {
     this.logoutButton = page.getByText('Logout');
   }
 
-  async navigateToDashboard() {
-    await this.page.goto('/dashboard');
-    await expect(this.fullUsersName).toBeVisible({ timeout: 10000 });
-    await expect(this.userRole).toBeVisible({ timeout: 10000 });
+  async navigateToDashboard(fullName) {
+    await this.page.goto('**/dashboard', { waitUntil: 'domcontentloaded' });
+    const fullUsersName = this.page.getByText(fullName);
+    await expect(fullUsersName).toBeVisible();
+    await expect(this.userRole).toBeVisible();
   } 
 
   async logout() {

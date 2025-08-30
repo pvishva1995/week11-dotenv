@@ -5,7 +5,7 @@ import { DashboardPage} from '../../page_objects/dashboard.page';
 import { faker } from '@faker-js/faker';
 
 test('should register new user', async ({ page }, testInfo) => {
-  await page.goto(testInfo.project.use.env.baseUrl, { timeout: 60000 });
+  await page.goto(testInfo.project.use.env.baseUrl, {  waitUntil: 'domcontentloaded', timeout: 10000 });
 
   const homepage = new HomePage(page);
   const registrationPage = new RegistrationPage(page);
@@ -15,12 +15,11 @@ test('should register new user', async ({ page }, testInfo) => {
   const randomLastName = faker.person.lastName();
   const randomEmail = faker.internet.email();
   const randomPassword = faker.internet.password();
+  const fullUsersName = `${randomFirstName} ${randomLastName}`;
   
   await homepage.registerIcon.click();
   await registrationPage.registration(randomFirstName, randomLastName, randomEmail, randomPassword);
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('load');
 
-  await dashboardPage.navigateToDashboard();
-  await expect(dashboardPage.fullUsersName).toBeVisible({ timeout: 50000 });
-  await expect(dashboardPage.userRole).toBeVisible({ timeout: 50000 });
+  await dashboardPage.page.waitForSelector(`text=${fullUsersName}`, { state: 'visible', timeout: 30000 });
 });

@@ -3,7 +3,7 @@ import { HomePage } from '../../page_objects/home.page';
 import { RegistrationPage } from '../../page_objects/registration.page';
 
 test('User should not register without filling in all required fields', async({ page }, testInfo) => {
-    await page.goto(testInfo.project.use.env.baseUrl);
+    await page.goto(testInfo.project.use.env.baseUrl, {  waitUntil: 'domcontentloaded', timeout: 10000 });
     const homePage = new HomePage(page);
     const registrationPage = new RegistrationPage(page);
 
